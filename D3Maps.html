@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+<h1>Temperature VS CO2 Emissions Across the United States</h1>
+<div id="CO2">
+<h2>CO2 Choropleth</h2>
+</div>
+<div id="Temperature">
+<h2>Temperature Choropleth</h2>
+</div>
+</head>
+<style>
+	body{
+		background-color: #F0F0F0;
+	}
+	h1{
+		text-align: center;
+	}
+	#CO2{
+		text-align: left;
+		padding-left: 150px;
+		padding-bottom: none;
+	}
+	#Temperature{
+		text-align: right;
+		padding-right: 350px;
+	}
+	#container{
+		background-attachment: #999;
+	}
+  nav li {
+    display: inline-block;
+  }
+</style>
+<body>
+<meta charset="utf-8">
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+ <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="datamaps.all.min.js"></script>
+<script src="D3Slider/d3.slider.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<ul>
+  <nav>
+    <li><div id="container" style="position: relative; width: 500px; height: 300px;"></div></li>
+    <li><div id="containerTwo" style="position: relative; width: 500px; height: 300px;"></div></li>
+  </nav>
+<script>
+    var map = new Datamap({
+        element: document.getElementById('container'),
+        scope: 'usa',
+        fills: {
+            defaultFill: 'rgba(100,100,100,0.9)' //any hex, color name or rgb/rgba value
+        }
+
+    });
+
+        var temperateMap = new Datamap({
+        element: document.getElementById('containerTwo'),
+        scope: 'usa',
+        fills: {
+            defaultFill: 'rgba(256,50,50,0.9)' //any hex, color name or rgb/rgba value
+        }
+
+    });
+
+
+    //D3 slider stuff
+    $(function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 1990,
+      max: 2012,
+      values: [ 75, 300 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+  });
+
+</script>
+
+  <p>
+  <label for="amount">Year range:</label>
+  <input type="text" id="amount" readonly style="border:0; color:#099; font-weight:bold;">
+</p>
+<div id="slider-range"></div>
+<br><br><br>
+</body>
+</html>
