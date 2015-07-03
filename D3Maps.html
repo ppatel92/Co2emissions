@@ -1,16 +1,33 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <head>
 <h1>Temperature VS CO2 Emissions Across the United States</h1>
 <div id="CO2">
-<h2>CO2 Choropleth</h2>
+<h2>CO2</h2>
 </div>
 <div id="Temperature">
-<h2>Temperature Choropleth</h2>
+<h2>Temperature</h2>
+</div>
+<div id="linechart">
+<h2>Temperature VS CO2</h2>
 </div>
 </head>
 <style>
 	body{
 		background-color: #F0F0F0;
+	}
+	
+	path{
+		stroke: steelblue;
+		stroke-width: 2;
+		fill: none;
+	}
+	
+	.axis path, .axis line{
+		fill: none;
+		stroke: grey:
+		stroke-width: 1;
+		shape-rendering: crispEdges;
 	}
 	h1{
 		text-align: center;
@@ -22,7 +39,14 @@
 	}
 	#Temperature{
 		text-align: right;
+		padding-right: 1000px;
+		padding-bottom: none;
+	}
+	
+	#linechart{
+		text-align: right;
 		padding-right: 350px;
+		padding-bottom: none;
 	}
 	#container{
 		background-attachment: #999;
@@ -40,6 +64,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="datamaps.all.min.js"></script>
 <script src="D3Slider/d3.slider.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 
 <ul>
@@ -65,6 +90,7 @@
         }
 
     });
+	
 
 
     //D3 slider stuff
