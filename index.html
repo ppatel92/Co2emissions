@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<h1>Temperature VS CO2 Emissions Across the United States</h1>
+<div id="CO2">
+<h2>CO2</h2>
+</div>
+<div id="Temperature">
+<h2>Temperature</h2>
+</div>
+<div id="linechart">
+<h2>Temperature VS CO2</h2>
+</div>
+</head>
+<style>
+	body{
+		background-color: #F0F0F0;
+	}
+	
+	path{
+		stroke-width: 2;
+		fill: none;
+	}
+	
+	.axis path, .axis line{
+		fill: none;
+		stroke: grey:
+		stroke-width: 1;
+		shape-rendering: crispEdges;
+	}
+	h1{
+		text-align: center;
+	}
+	#CO2{
+		text-align: left;
+		padding-left: 150px;
+		padding-bottom: none;
+	}
+	#Temperature{
+		text-align: right;
+		padding-right: 1000px;
+		padding-bottom: none;
+	}
+	
+	#linechart{
+		text-align: right;
+		padding-right: 350px;
+		padding-bottom: none;
+	}
+	#container{
+		background-attachment: #999;
+	}
+  nav li {
+    display: inline-block;
+  }
+  .axis path {
+            fill: none;
+            stroke: #777;
+            shape-rendering: crispEdges;
+        }
+        .axis text {
+            font-family: Lato;
+            font-size: 13px;
+        }
+		
+		#linechart{
+		padding-right: 350px;
+		padding-bottom: none;
+	}
+</style>
+<body>
+<meta charset="utf-8">
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+ <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="datamaps.all.min.js"></script>
+<script src="D3Slider/d3.slider.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+ <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="http://getbootstrap.com/examples/justified-nav/justified-nav.css" rel="stylesheet">
+
+<ul>
+  <nav>
+    <li><div id="container" style="position: relative; width: 500px; height: 300px;"></div></li>
+    <li><div id="containerTwo" style="position: relative; width: 500px; height: 300px;"></div></li>
+  </nav>
+<script>
+    var map = new Datamap({
+        element: document.getElementById('container'),
+        scope: 'usa',
+        fills: {
+            defaultFill: 'rgba(100,100,100,0.9)' //any hex, color name or rgb/rgba value
+        }
+
+    });
+
+        var temperateMap = new Datamap({
+        element: document.getElementById('containerTwo'),
+        scope: 'usa',
+        fills: {
+            defaultFill: 'rgba(256,50,50,0.9)' //any hex, color name or rgb/rgba value
+        }
+
+    });
+	
+
+
+    //D3 slider stuff
+    $(function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: 1990,
+      max: 2012,
+      values: [ 75, 300 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+  });
+
+</script>
+
+  <p>
+  <label for="amount">Year range:</label>
+  <input type="text" id="amount" readonly style="border:0; color:#099; font-weight:bold;">
+</p>
+<div id="slider-range"></div>
+<br><br><br>
+</body>
+<div class="container">
+
+        <div class="jumbotron">
+
+            <svg id="visualisation" width="500" height="300"></svg>
+            <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+            <script>
+                function InitChart() {
+                    var data = [{
+                        "sale": "202",
+                        "year": "2000"
+                    }, {
+                        "sale": "215",
+                        "year": "2002"
+                    }, {
+                        "sale": "179",
+                        "year": "2004"
+                    }, {
+                        "sale": "199",
+                        "year": "2006"
+                    }, {
+                        "sale": "134",
+                        "year": "2008"
+                    }, {
+                        "sale": "176",
+                        "year": "2010"
+                    }];
+                    var data2 = [{
+                        "sale": "152",
+                        "year": "2000"
+                    }, {
+                        "sale": "189",
+                        "year": "2002"
+                    }, {
+                        "sale": "179",
+                        "year": "2004"
+                    }, {
+                        "sale": "199",
+                        "year": "2006"
+                    }, {
+                        "sale": "134",
+                        "year": "2008"
+                    }, {
+                        "sale": "176",
+                        "year": "2010"
+                    }];
+                    var vis = d3.select("#visualisation"),
+                        WIDTH = 500,
+                        HEIGHT = 300,
+                        MARGINS = {
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 50
+                        },
+                        xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([2000, 2010]),
+                        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([134, 215]),
+                        xAxis = d3.svg.axis()
+                        .scale(xScale),
+                        yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left");
+                    
+                    vis.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+                        .call(xAxis);
+                    vis.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+                        .call(yAxis);
+                    var lineGen = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d.year);
+                        })
+                        .y(function(d) {
+                            return yScale(d.sale);
+                        })
+                        .interpolate("basis");
+                    vis.append('svg:path')
+                        .attr('d', lineGen(data))
+                        .attr('stroke', 'grey')
+                        .attr('stroke-width', 2)
+                        .attr('fill', 'none');
+                    vis.append('svg:path')
+                        .attr('d', lineGen(data2))
+                        .attr('stroke', 'red')
+                        .attr('stroke-width', 2)
+                        .attr('fill', 'none');
+                }
+                InitChart();
+            </script>
+        </div>
+
+    </div>
+</html>
